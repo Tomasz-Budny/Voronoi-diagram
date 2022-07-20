@@ -6,24 +6,17 @@ public class VoronoiDiagram : MonoBehaviour
 {
     public int textureHeight, textureWidth;
     public int numberOfSets;
+    public Region[] regions;
     public float minkowskiDistanceOfOrder;
     public void GenerateVoronoiDiagram()
     {
-        Color[] regionsColors = new Color[numberOfSets];
-        Vector2Int[] sets = new Vector2Int[numberOfSets];
-        for (int i = 0; i < numberOfSets; i++)
-        {
-            sets[i] = new Vector2Int(Random.Range(0, textureWidth), Random.Range(0, textureHeight));
-            regionsColors[i] = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-        }
-
         Color[] pixelColor = new Color[textureWidth * textureHeight];
         for (int x = 0; x < textureWidth; x++)
         {
             for (int y = 0; y < textureHeight; y++)
             {
                 int index = x * textureWidth + y;
-                pixelColor[index] = regionsColors[GetClosestSetIndex(new Vector2Int(x, y), sets)];
+                pixelColor[index] = regions[GetClosestSetIndex(new Vector2Int(x, y))].colour;
             }
         }
         Texture2D texture =  GetTextureFromColorArray(pixelColor);
@@ -31,18 +24,18 @@ public class VoronoiDiagram : MonoBehaviour
         txtDisp.DrawTexture(texture);
     }
 
-    int GetClosestSetIndex(Vector2Int currentPosition, Vector2Int[] sets)
+    int GetClosestSetIndex(Vector2Int currentPosition)
     {
         int index = 0;
         int i = 0;
         float smallestDistance = float.MaxValue;
 
-        foreach(Vector2Int set in sets)
+        foreach(Region regionSet in regions)
         {
             int x1 = currentPosition.x;
             int y1 = currentPosition.y;
-            int x2 = set.x;
-            int y2 = set.y;
+            int x2 = regionSet.set.x;
+            int y2 = regionSet.set.y;
             float p = minkowskiDistanceOfOrder;
             float minkowskiDistance = Mathf.Pow(Mathf.Pow(Mathf.Abs(x2 - x1), p) + Mathf.Pow(Mathf.Abs(y2 - y1), p), 1f / p);
 
@@ -59,11 +52,17 @@ public class VoronoiDiagram : MonoBehaviour
     Texture2D GetTextureFromColorArray(Color[] pixelColor)
     {
         Texture2D texture = new Texture2D(textureWidth, textureHeight);
-        //texture.filterMode = FilterMode.Point;
         texture.SetPixels(pixelColor);
         texture.Apply();
         return texture;
 
     }
 
+}
+
+[System.Serializable]
+public class Region
+{
+    public Vector2Int set;
+    public Color colour;
 }
