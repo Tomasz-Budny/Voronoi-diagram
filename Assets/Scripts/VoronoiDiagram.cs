@@ -51,6 +51,7 @@ public class VoronoiDiagram : MonoBehaviour
     Texture2D GetTextureFromColorArray(Color[] pixelColor)
     {
         Texture2D texture = new Texture2D(textureWidth, textureHeight);
+        texture.wrapMode = TextureWrapMode.Clamp;
         texture.SetPixels(pixelColor);
         texture.Apply();
         return texture;
