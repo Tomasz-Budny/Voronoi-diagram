@@ -5,7 +5,6 @@ using UnityEngine;
 public class VoronoiDiagram : MonoBehaviour
 {
     public int textureHeight, textureWidth;
-    public int numberOfSets;
     public Region[] regions;
     public float minkowskiDistanceOfOrder;
     public void GenerateVoronoiDiagram()
