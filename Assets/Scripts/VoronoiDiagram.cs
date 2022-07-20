@@ -6,6 +6,7 @@ public class VoronoiDiagram : MonoBehaviour
 {
     public int textureHeight, textureWidth;
     public int numberOfSets;
+    public float minkowskiDistanceOfOrder;
     public void GenerateVoronoiDiagram()
     {
         Color[] regionsColors = new Color[numberOfSets];
@@ -42,10 +43,7 @@ public class VoronoiDiagram : MonoBehaviour
             int y1 = currentPosition.y;
             int x2 = set.x;
             int y2 = set.y;
-            float distance = Mathf.Sqrt(Mathf.Pow(x2 - x1, 2) + Mathf.Pow(y2 - y1, 2));
-            float manhattanDistance = Mathf.Abs(x1 - x2) + Mathf.Abs(y1 - y2);
-            float dumbDistance = x2 * x1 + y2 * x1;
-            int p = 15;
+            float p = minkowskiDistanceOfOrder;
             float minkowskiDistance = Mathf.Pow(Mathf.Pow(Mathf.Abs(x2 - x1), p) + Mathf.Pow(Mathf.Abs(y2 - y1), p), 1f / p);
 
             if(minkowskiDistance < smallestDistance)
