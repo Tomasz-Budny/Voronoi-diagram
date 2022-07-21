@@ -58,7 +58,20 @@ public class VoronoiDiagram : MonoBehaviour
             int ySet = region.set.y;
             if(ItIsWithinTheBoundariesOfPixelMAp(xSet, ySet))
             {
-                pixelColor[xSet * textureWidth + ySet] = new Color(0f, 0f, 0f);
+                int pointSize = 2;
+                int x = xSet - 2 < 0 ? 0 : xSet - 2;
+                int y = ySet - 2 < 0 ? 0 : ySet - 2;
+
+                while(x < textureWidth && x - xSet < pointSize)
+                {
+                    while(y < textureHeight && y - ySet < pointSize)
+                    {
+                        pixelColor[x * textureWidth + y] = new Color(0f, 0f, 0f);
+                        y++;
+                    }
+                    x++;
+                    y = ySet - 2 < 0 ? 0 : ySet - 2;
+                }
             }
         }
         return pixelColor;
