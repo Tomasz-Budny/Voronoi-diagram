@@ -58,9 +58,9 @@ public class VoronoiDiagram : MonoBehaviour
             int ySet = region.set.y;
             if(ItIsWithinTheBoundariesOfPixelMAp(xSet, ySet))
             {
-                int pointSize = 2;
-                int x = xSet - 2 < 0 ? 0 : xSet - 2;
-                int y = ySet - 2 < 0 ? 0 : ySet - 2;
+                int pointSize = textureWidth / 200;
+                int x = xSet - pointSize < 0 ? 0 : xSet - pointSize;
+                int y = ySet - pointSize < 0 ? 0 : ySet - pointSize;
 
                 while(x < textureWidth && x - xSet < pointSize)
                 {
@@ -70,7 +70,7 @@ public class VoronoiDiagram : MonoBehaviour
                         y++;
                     }
                     x++;
-                    y = ySet - 2 < 0 ? 0 : ySet - 2;
+                    y = ySet - pointSize < 0 ? 0 : ySet - pointSize;
                 }
             }
         }
