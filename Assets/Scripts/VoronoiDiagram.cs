@@ -18,6 +18,8 @@ public class VoronoiDiagram : MonoBehaviour
                 pixelColor[index] = regions[GetClosestSetIndex(new Vector2Int(x, y))].colour;
             }
         }
+
+        pixelColor = AddSetsOnColorMap(pixelColor);
         Texture2D texture =  GetTextureFromColorArray(pixelColor);
         TextureDisplay txtDisp = FindObjectOfType<TextureDisplay>();
         txtDisp.DrawTexture(texture);
@@ -48,6 +50,29 @@ public class VoronoiDiagram : MonoBehaviour
         return index;
     }
 
+    Color[] AddSetsOnColorMap(Color[] pixelColor)
+    {
+        foreach(Region region in regions)
+        {
+            int xSet = region.set.x;
+            int ySet = region.set.y;
+            if(ItIsWithinTheBoundariesOfPixelMAp(xSet, ySet))
+            {
+                pixelColor[xSet * textureWidth + ySet] = new Color(0f, 0f, 0f);
+            }
+        }
+        return pixelColor;
+    }
+
+    bool ItIsWithinTheBoundariesOfPixelMAp(int x, int y)
+    {
+        if (x < 0 || x > textureWidth)
+            return false;
+        if (y < 0 || y > textureHeight)
+            return false;
+        return true;
+    }
+
     Texture2D GetTextureFromColorArray(Color[] pixelColor)
     {
         Texture2D texture = new Texture2D(textureWidth, textureHeight);
@@ -55,9 +80,7 @@ public class VoronoiDiagram : MonoBehaviour
         texture.SetPixels(pixelColor);
         texture.Apply();
         return texture;
-
     }
-
 }
 
 [System.Serializable]
